@@ -57,3 +57,7 @@ pkcs7_verify_badcert:"data_files/pkcs7_data_cert.signed.sha256":"data_files/pkcs
 PKCS7 Signed Data Verification Fail because of different data hash #13
 depends_on:MBEDTLS_PKCS7_C
 pkcs7_verify_tampered_data:"data_files/pkcs7_data_cert.signed.sha256":"data_files/pkcs7-rsa-sha256-1.crt":"data_files/pkcs7_data_1.txt"
+
+PKCS7 Only Signed Data Parse Pass #14
+depends_on:MBEDTLS_PKCS7_C
+pkcs7_parse:"data_files/pkcs7_data_cert.signeddata.sha256"
