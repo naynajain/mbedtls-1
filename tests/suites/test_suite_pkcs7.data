@@ -1,71 +1,55 @@
 PKCS7 Signed Data Parse Pass SHA256 #1
-depends_on:MBEDTLS_PKCS7_C
 pkcs7_parse:"data_files/pkcs7_data_cert.signed.sha256"
 
 PKCS7 Signed Data Parse Pass SHA1 #2
-depends_on:MBEDTLS_PKCS7_C
+depends_on:MBEDTLS_SHA1_C
 pkcs7_parse:"data_files/pkcs7_data_cert.signed.sha1"
 
 PKCS7 Signed Data Parse Pass Without CERT #3
-depends_on:MBEDTLS_PKCS7_C
 pkcs7_parse_without_cert:"data_files/pkcs7_data_without_cert.signed"
 
 PKCS7 Signed Data Parse Fail with multiple signers #4
-depends_on:MBEDTLS_PKCS7_C
 pkcs7_parse_multiple_signers:"data_files/pkcs7_data_multiple.signed"
 
 PKCS7 Signed Data Parse Fail with multiple certs #4
-depends_on:MBEDTLS_PKCS7_C
 pkcs7_parse_multiple_signers:"data_files/pkcs7_data_multiple_certs.signed"
 
 PKCS7 Signed Data Parse Fail with corrupted cert #5
-depends_on:MBEDTLS_PKCS7_C
 pkcs7_parse_corrupted_cert:"data_files/pkcs7_data.signed.badcert"
 
 PKCS7 Signed Data Parse Fail with corrupted signer info #6
-depends_on:MBEDTLS_PKCS7_C
 pkcs7_parse_corrupted_signer_info:"data_files/pkcs7_data.signed.badsigner"
 
 PKCS7 Signed Data Parse Fail Version other than 1 #7
-depends_on:MBEDTLS_PKCS7_C
 pkcs7_parse_version:"data_files/pkcs7_data_cert.signed.v2"
 
 PKCS7 Signed Data Parse Fail Encrypted Content #8
-depends_on:MBEDTLS_PKCS7_C
 pkcs7_parse_content_oid:"data_files/pkcs7_data_cert.encrypted"
 
 PKCS7 Signed Data Verification Pass SHA256 #9
-depends_on:MBEDTLS_PKCS7_C
 pkcs7_verify:"data_files/pkcs7_data_cert.signed.sha256":"data_files/pkcs7-rsa-sha256-1.crt":"data_files/pkcs7_data.txt"
 
 PKCS7 Signed Data Verification Pass SHA256 #9.1
-depends_on:MBEDTLS_PKCS7_C
 pkcs7_verify_hash:"data_files/pkcs7_data_cert.signed.sha256":"data_files/pkcs7-rsa-sha256-1.crt":"data_files/pkcs7_data.txt"
 
 PKCS7 Signed Data Verification Pass SHA1 #10
-depends_on:MBEDTLS_PKCS7_C
 pkcs7_verify:"data_files/pkcs7_data_cert.signed.sha1":"data_files/pkcs7-rsa-sha256-1.crt":"data_files/pkcs7_data.txt"
 
 PKCS7 Signed Data Verification Pass SHA512 #11
-depends_on:MBEDTLS_PKCS7_C
+depends_on:MBEDTLS_SHA512_C
 pkcs7_verify:"data_files/pkcs7_data_cert.signed.sha512":"data_files/pkcs7-rsa-sha256-1.crt":"data_files/pkcs7_data.txt"
 
 PKCS7 Signed Data Verification Fail because of different certificate #12
-depends_on:MBEDTLS_PKCS7_C
 pkcs7_verify_badcert:"data_files/pkcs7_data_cert.signed.sha256":"data_files/pkcs7-rsa-sha256-2.crt":"data_files/pkcs7_data.txt"
 
 PKCS7 Signed Data Verification Fail because of different data hash #13
-depends_on:MBEDTLS_PKCS7_C
 pkcs7_verify_tampered_data:"data_files/pkcs7_data_cert.signed.sha256":"data_files/pkcs7-rsa-sha256-1.crt":"data_files/pkcs7_data_1.txt"
 
 PKCS7 Only Signed Data Parse Pass #14
-depends_on:MBEDTLS_PKCS7_C
 pkcs7_parse:"data_files/pkcs7_data_cert.signeddata.sha256"
 
 PKCS7 Signed Data Parse Failure Corrupt signerInfo.issuer #15.1
-depends_on:MBEDTLS_PKCS7_C
 pkcs7_parse_failure:"data_files/pkcs7_data_cert.signerInfo.issuer.invalid_size"
 
 PKCS7 Signed Data Parse Failure Corrupt signerInfo.serial #15.2
-depends_on:MBEDTLS_PKCS7_C
 pkcs7_parse_failure:"data_files/pkcs7_data_cert.signerInfo.serial.invalid_size"
