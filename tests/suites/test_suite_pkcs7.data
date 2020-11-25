@@ -61,3 +61,11 @@ pkcs7_verify_tampered_data:"data_files/pkcs7_data_cert.signed.sha256":"data_file
 PKCS7 Only Signed Data Parse Pass #14
 depends_on:MBEDTLS_PKCS7_C
 pkcs7_parse:"data_files/pkcs7_data_cert.signeddata.sha256"
+
+PKCS7 Signed Data Parse Failure Corrupt signerInfo.issuer #15.1
+depends_on:MBEDTLS_PKCS7_C
+pkcs7_parse_failure:"data_files/pkcs7_data_cert.signerInfo.issuer.invalid_size"
+
+PKCS7 Signed Data Parse Failure Corrupt signerInfo.serial #15.2
+depends_on:MBEDTLS_PKCS7_C
+pkcs7_parse_failure:"data_files/pkcs7_data_cert.signerInfo.serial.invalid_size"

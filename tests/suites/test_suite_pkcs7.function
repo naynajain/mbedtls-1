@@ -398,3 +398,24 @@ exit:
 
 }
 /* END_CASE */
+
+/* BEGIN_CASE depends_on:MBEDTLS_PKCS7_C */
+void pkcs7_parse_failure( char *pkcs7_file )
+{
+    unsigned char *pkcs7_buf = NULL;
+    size_t buflen;
+    int res;
+    mbedtls_pkcs7 pkcs7;
+
+    mbedtls_pkcs7_init( &pkcs7 );
+
+    res = mbedtls_pkcs7_load_file( pkcs7_file, &pkcs7_buf, &buflen );
+    TEST_ASSERT( res == 0 );
+
+    res = mbedtls_pkcs7_parse_der( pkcs7_buf, buflen, &pkcs7 );
+    TEST_ASSERT( res != 0 );
+exit:
+    mbedtls_free( pkcs7_buf );
+    mbedtls_pkcs7_free( &pkcs7 );
+}
+/* END_CASE */
