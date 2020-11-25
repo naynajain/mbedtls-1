@@ -11,10 +11,11 @@
 /* END_HEADER */
 
 /* BEGIN_DEPENDENCIES
+ * depends_on:MBEDTLS_PKCS7_C:MBEDTLS_RSA_C:MBEDTLS_SHA256_C
  * END_DEPENDENCIES
  */
 
-/* BEGIN_CASE depends_on:MBEDTLS_PKCS7_C */
+/* BEGIN_CASE */
 void pkcs7_parse( char *pkcs7_file )
 {
     unsigned char *pkcs7_buf = NULL;
@@ -37,7 +38,7 @@ exit:
 }
 /* END_CASE */
 
-/* BEGIN_CASE depends_on:MBEDTLS_PKCS7_C */
+/* BEGIN_CASE */
 void pkcs7_parse_without_cert( char *pkcs7_file )
 {
     unsigned char *pkcs7_buf = NULL;
@@ -60,7 +61,7 @@ exit:
 }
 /* END_CASE */
 
-/* BEGIN_CASE depends_on:MBEDTLS_PKCS7_C */
+/* BEGIN_CASE */
 void pkcs7_parse_multiple_signers( char *pkcs7_file )
 {
     unsigned char *pkcs7_buf = NULL;
@@ -95,7 +96,7 @@ exit:
 }
 /* END_CASE */
 
-/* BEGIN_CASE depends_on:MBEDTLS_PKCS7_C */
+/* BEGIN_CASE */
 void pkcs7_parse_corrupted_cert( char *pkcs7_file )
 {
     unsigned char *pkcs7_buf = NULL;
@@ -118,7 +119,7 @@ exit:
 }
 /* END_CASE */
 
-/* BEGIN_CASE depends_on:MBEDTLS_PKCS7_C */
+/* BEGIN_CASE */
 void pkcs7_parse_corrupted_signer_info( char *pkcs7_file )
 {
     unsigned char *pkcs7_buf = NULL;
@@ -141,7 +142,7 @@ exit:
 }
 /* END_CASE */
 
-/* BEGIN_CASE depends_on:MBEDTLS_PKCS7_C */
+/* BEGIN_CASE */
 void pkcs7_parse_version( char *pkcs7_file )
 {
     unsigned char *pkcs7_buf = NULL;
@@ -164,7 +165,7 @@ exit:
 }
 /* END_CASE */
 
-/* BEGIN_CASE depends_on:MBEDTLS_PKCS7_C */
+/* BEGIN_CASE */
 void pkcs7_parse_content_oid( char *pkcs7_file )
 {
     unsigned char *pkcs7_buf = NULL;
@@ -186,7 +187,7 @@ exit:
 }
 /* END_CASE */
 
-/* BEGIN_CASE depends_on:MBEDTLS_X509_CRT_PARSE_C:MBEDTLS_PKCS7_C */
+/* BEGIN_CASE */
 void pkcs7_verify( char *pkcs7_file, char *crt, char *filetobesigned )
 {
     unsigned char *pkcs7_buf = NULL;
@@ -236,7 +237,7 @@ exit:
 }
 /* END_CASE */
 
-/* BEGIN_CASE depends_on:MBEDTLS_X509_CRT_PARSE_C:MBEDTLS_PKCS7_C */
+/* BEGIN_CASE */
 void pkcs7_verify_hash( char *pkcs7_file, char *crt, char *filetobesigned )
 {
     unsigned char *pkcs7_buf = NULL;
@@ -298,7 +299,7 @@ exit:
 }
 /* END_CASE */
 
-/* BEGIN_CASE depends_on:MBEDTLS_X509_CRT_PARSE_C:MBEDTLS_PKCS7_C */
+/* BEGIN_CASE */
 void pkcs7_verify_badcert( char *pkcs7_file, char *crt, char *filetobesigned )
 {
     unsigned char *pkcs7_buf = NULL;
@@ -348,7 +349,7 @@ exit:
 }
 /* END_CASE */
 
-/* BEGIN_CASE depends_on:MBEDTLS_X509_CRT_PARSE_C:MBEDTLS_PKCS7_C */
+/* BEGIN_CASE */
 void pkcs7_verify_tampered_data( char *pkcs7_file, char *crt, char *filetobesigned )
 {
     unsigned char *pkcs7_buf = NULL;
@@ -396,5 +397,26 @@ exit:
     mbedtls_free( data );
     mbedtls_free( pkcs7_buf );
 
+}
+/* END_CASE */
+
+/* BEGIN_CASE */
+void pkcs7_parse_failure( char *pkcs7_file )
+{
+    unsigned char *pkcs7_buf = NULL;
+    size_t buflen;
+    int res;
+    mbedtls_pkcs7 pkcs7;
+
+    mbedtls_pkcs7_init( &pkcs7 );
+
+    res = mbedtls_pkcs7_load_file( pkcs7_file, &pkcs7_buf, &buflen );
+    TEST_ASSERT( res == 0 );
+
+    res = mbedtls_pkcs7_parse_der( pkcs7_buf, buflen, &pkcs7 );
+    TEST_ASSERT( res != 0 );
+exit:
+    mbedtls_free( pkcs7_buf );
+    mbedtls_pkcs7_free( &pkcs7 );
 }
 /* END_CASE */
