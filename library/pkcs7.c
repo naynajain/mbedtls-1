@@ -59,7 +59,6 @@
 /*
  * Load all data from a file into a given buffer.
  *
- * The file is expected to contain DER encoded data.
  * A terminating null byte is always appended.
  */
 int mbedtls_pkcs7_load_file( const char *path, unsigned char **buf, size_t *n )

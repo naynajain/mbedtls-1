@@ -14,6 +14,7 @@
  * END_DEPENDENCIES
  */
 
+
 /* BEGIN_CASE depends_on:MBEDTLS_PEM_PARSE_C:MBEDTLS_RSA_C:MBEDTLS_SHA256_C */
 void pkcs7_parse( char *pkcs7_file )
 {
@@ -192,10 +193,8 @@ void pkcs7_verify( char *pkcs7_file, char *crt, char *filetobesigned )
     unsigned char *pkcs7_buf = NULL;
     size_t buflen;
     unsigned char *data = NULL;
-    struct stat st;
     size_t datalen;
     int res;
-    FILE *file;
 
     mbedtls_pkcs7 pkcs7;
     mbedtls_x509_crt x509;
@@ -213,18 +212,8 @@ void pkcs7_verify( char *pkcs7_file, char *crt, char *filetobesigned )
     TEST_ASSERT( res == MBEDTLS_PKCS7_SIGNED_DATA );
     mbedtls_free( pkcs7_buf );
 
-    res = stat(filetobesigned, &st);
+    res = mbedtls_pkcs7_load_file( filetobesigned, &data, &datalen );
     TEST_ASSERT( res == 0 );
-
-    file = fopen( filetobesigned, "r" );
-    TEST_ASSERT( file != NULL );
-
-    datalen = st.st_size;
-    data = mbedtls_calloc( datalen, 1 );
-    buflen = fread( ( void * )data , sizeof( unsigned char ), datalen, file );
-    TEST_ASSERT( buflen == datalen);
-
-    fclose(file);
 
     res = mbedtls_pkcs7_signed_data_verify( &pkcs7, &x509, data, datalen );
     TEST_ASSERT( res == 0 );
@@ -243,10 +232,8 @@ void pkcs7_verify_hash( char *pkcs7_file, char *crt, char *filetobesigned )
     size_t buflen;
     unsigned char *data = NULL;
     unsigned char hash[32];
-    struct stat st;
     size_t datalen;
     int res;
-    FILE *file;
     const mbedtls_md_info_t *md_info;
     mbedtls_md_type_t md_alg;
 
@@ -265,19 +252,8 @@ void pkcs7_verify_hash( char *pkcs7_file, char *crt, char *filetobesigned )
     res = mbedtls_pkcs7_parse_der( pkcs7_buf, buflen, &pkcs7 );
     TEST_ASSERT( res == MBEDTLS_PKCS7_SIGNED_DATA );
 
-    res = stat(filetobesigned, &st);
+    res = mbedtls_pkcs7_load_file( filetobesigned, &data, &datalen );
     TEST_ASSERT( res == 0 );
-
-    file = fopen( filetobesigned, "r" );
-    TEST_ASSERT( file != NULL );
-
-    datalen = st.st_size;
-    data = mbedtls_calloc( datalen, 1 );
-    TEST_ASSERT( data != NULL);
-
-    buflen = fread( (void *)data , sizeof( unsigned char ), datalen, file );
-    TEST_ASSERT( buflen == datalen);
-    fclose( file );
 
     res = mbedtls_oid_get_md_alg( &(pkcs7.signed_data.digest_alg_identifiers), &md_alg );
     TEST_ASSERT( res == 0 );
@@ -304,10 +280,8 @@ void pkcs7_verify_badcert( char *pkcs7_file, char *crt, char *filetobesigned )
     unsigned char *pkcs7_buf = NULL;
     size_t buflen;
     unsigned char *data = NULL;
-    struct stat st;
     size_t datalen;
     int res;
-    FILE *file;
 
     mbedtls_pkcs7 pkcs7;
     mbedtls_x509_crt x509;
@@ -324,18 +298,8 @@ void pkcs7_verify_badcert( char *pkcs7_file, char *crt, char *filetobesigned )
     res = mbedtls_x509_crt_parse_file( &x509, crt );
     TEST_ASSERT( res == 0 );
 
-    res = stat(filetobesigned, &st);
+    res = mbedtls_pkcs7_load_file( filetobesigned, &data, &datalen );
     TEST_ASSERT( res == 0 );
-
-    file = fopen( filetobesigned, "r" );
-    TEST_ASSERT( file != NULL );
-
-    datalen = st.st_size;
-    data = mbedtls_calloc( datalen, 1 );
-    buflen = fread( ( void * )data , sizeof( unsigned char ), datalen, file );
-    TEST_ASSERT( buflen == datalen);
-
-    fclose(file);
 
     res = mbedtls_pkcs7_signed_data_verify( &pkcs7, &x509, data, datalen );
     TEST_ASSERT( res != 0 );
@@ -354,10 +318,8 @@ void pkcs7_verify_tampered_data( char *pkcs7_file, char *crt, char *filetobesign
     unsigned char *pkcs7_buf = NULL;
     size_t buflen;
     unsigned char *data = NULL;
-    struct stat st;
     size_t datalen;
     int res;
-    FILE *file;
 
     mbedtls_pkcs7 pkcs7;
     mbedtls_x509_crt x509;
@@ -374,18 +336,8 @@ void pkcs7_verify_tampered_data( char *pkcs7_file, char *crt, char *filetobesign
     res = mbedtls_x509_crt_parse_file( &x509, crt );
     TEST_ASSERT( res == 0 );
 
-    res = stat(filetobesigned, &st);
+    res = mbedtls_pkcs7_load_file( filetobesigned, &data, &datalen );
     TEST_ASSERT( res == 0 );
-
-    file = fopen( filetobesigned, "r" );
-    TEST_ASSERT( file != NULL );
-
-    datalen = st.st_size;
-    data = mbedtls_calloc( datalen, 1 );
-    buflen = fread( ( void * )data , sizeof( unsigned char ), datalen, file );
-    TEST_ASSERT( buflen == datalen);
-
-    fclose(file);
 
     res = mbedtls_pkcs7_signed_data_verify( &pkcs7, &x509, data, datalen );
     TEST_ASSERT( res != 0 );
