@@ -7,6 +7,13 @@
 #include "mbedtls/oid.h"
 #include "sys/types.h"
 #include "sys/stat.h"
+
+static void parse_result( const char *name, int res , int res_expected)
+{
+    fprintf( stderr, "%s : %s res = %d\n", res == res_expected ? "SUCCESS" : "FAIL", name, res );
+
+}
+
 /* END_HEADER */
 
 /* BEGIN_DEPENDENCIES
@@ -203,19 +210,24 @@ void pkcs7_verify( char *pkcs7_file, char *crt, char *filetobesigned )
     mbedtls_x509_crt_init( &x509 );
 
     res = mbedtls_x509_crt_parse_file( &x509, crt );
+    parse_result("Parse X509", res, 0);
     TEST_ASSERT( res == 0 );
-
+    
     res = mbedtls_pkcs7_load_file( pkcs7_file, &pkcs7_buf, &buflen );
+    parse_result("Load PKCS7 buff", res, 0);
     TEST_ASSERT( res == 0 );
 
     res = mbedtls_pkcs7_parse_der( pkcs7_buf, buflen, &pkcs7 );
+    parse_result("Parse PKCS7 Into Struct ", res, MBEDTLS_PKCS7_SIGNED_DATA);
     TEST_ASSERT( res == MBEDTLS_PKCS7_SIGNED_DATA );
     mbedtls_free( pkcs7_buf );
 
     res = mbedtls_pkcs7_load_file( filetobesigned, &data, &datalen );
+    parse_result("Load data file buf", res, 0);
     TEST_ASSERT( res == 0 );
 
     res = mbedtls_pkcs7_signed_data_verify( &pkcs7, &x509, data, datalen );
+    parse_result("Verify signature", res, 0);
     TEST_ASSERT( res == 0 );
 
 exit:
