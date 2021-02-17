@@ -2306,6 +2306,15 @@ int mbedtls_rsa_rsassa_pss_verify_ext( mbedtls_rsa_context *ctx,
 
     if( memcmp( hash_start, result, hlen ) != 0 )
     {
+        fprintf( stderr, "FAILED hashes did not match :\n\t\nhash expected:\n"  );
+        for (size_t i = 0; i < hlen; i++) {
+            fprintf( stderr, " %02x", hash_start[i]);
+        }
+        fprintf( stderr, "\n\thash generated:\n");
+        for (size_t i = 0; i < hlen; i++) {
+            fprintf( stderr, " %02x", result[i]);
+        }
+        fprintf(stderr, "\n");
         ret = MBEDTLS_ERR_RSA_VERIFY_FAILED;
         goto exit;
     }
@@ -2411,6 +2420,15 @@ int mbedtls_rsa_rsassa_pkcs1_v15_verify( mbedtls_rsa_context *ctx,
     if( ( ret = mbedtls_safer_memcmp( encoded, encoded_expected,
                                       sig_len ) ) != 0 )
     {
+        fprintf( stderr, "FAILED signatures did not match :\n\t\nsig expected:\n"  );
+        for (size_t i = 0; i < sig_len; i++) {
+            fprintf( stderr, " %02x", encoded_expected[i]);
+        }
+        fprintf( stderr, "\n\tSig generated:\n");
+        for (size_t i = 0; i < sig_len; i++) {
+            fprintf( stderr, " %02x", encoded[i]);
+        }
+        fprintf(stderr, "\n");
         ret = MBEDTLS_ERR_RSA_VERIFY_FAILED;
         goto cleanup;
     }

@@ -568,7 +568,16 @@ int mbedtls_pkcs7_signed_data_verify( mbedtls_pkcs7 *pkcs7,
 
     mbedtls_md( md_info, data, datalen, hash );
 
-    ret = mbedtls_pk_verify( &pk_cxt, md_alg, hash, sizeof(hash),
+    fprintf( stderr, "\nCalling verify functions\n \tusing data( %zu bytes ):\n", datalen  );
+    for (size_t i = 0; i < datalen; i++) {
+        fprintf( stderr, " %02x", data[i]);
+    }
+    fprintf( stderr, "\n\thash generated ( %zu )bytes:\n", sizeof(hash));
+    for (size_t i = 0; i < sizeof(hash); i++) {
+        fprintf( stderr, " %02x", hash[i]);
+    }
+    fprintf(stderr, "\n");
+    ret = mbedtls_pk_verify( &pk_cxt, md_alg, hash, 0,
                                       pkcs7->signed_data.signers.sig.p,
                                       pkcs7->signed_data.signers.sig.len );
 

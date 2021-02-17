@@ -87,8 +87,11 @@ static int rsa_verify_wrap( void *ctx, mbedtls_md_type_t md_alg,
         return( MBEDTLS_ERR_PK_BAD_INPUT_DATA );
 #endif /* SIZE_MAX > UINT_MAX */
 
-    if( sig_len < rsa_len )
+    fprintf( stderr, "rsa_verify_wrap called...\n");
+    if( sig_len < rsa_len ){
+        fprintf( stderr, "Failed comparing sizes sig_len < rsa_len, %lu < %lu\n", sig_len, rsa_len );
         return( MBEDTLS_ERR_RSA_VERIFY_FAILED );
+    }
 
     if( ( ret = mbedtls_rsa_pkcs1_verify( rsa, NULL, NULL,
                                   MBEDTLS_RSA_PUBLIC, md_alg,

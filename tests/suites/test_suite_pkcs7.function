@@ -212,7 +212,7 @@ void pkcs7_verify( char *pkcs7_file, char *crt, char *filetobesigned )
     res = mbedtls_x509_crt_parse_file( &x509, crt );
     parse_result("Parse X509", res, 0);
     TEST_ASSERT( res == 0 );
-    
+
     res = mbedtls_pkcs7_load_file( pkcs7_file, &pkcs7_buf, &buflen );
     parse_result("Load PKCS7 buff", res, 0);
     TEST_ASSERT( res == 0 );
